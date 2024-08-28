@@ -1,11 +1,7 @@
 import React from 'react'
-import { redirect } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 export default function Home() {
-
-    function easy() {
-        redirect("/easy")
-    }
 
     return <div id='home'>
 
@@ -14,9 +10,9 @@ export default function Home() {
 
             <div id='difficulty-buttons'>
 
-                <button>Easy</button>
-                <button>Normal</button>
-                <button>Hard</button>
+                <Link id='easy-button' to={"/easy"}>Easy</Link>
+                <Link id='normal-button'>Normal</Link>
+                <Link id='hard-button'>Hard</Link>
 
             </div>
 
