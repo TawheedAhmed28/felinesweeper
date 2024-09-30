@@ -15,10 +15,16 @@ export default function Home() {
             <div id='difficulty-buttons'>
 
                 <Link id='easy-button' to={"/easy"}>Easy</Link>
-                <Link id='normal-button'>Normal</Link>
-                <Link id='hard-button'>Hard</Link>
+                <Link id='normal-button' to={"/normal"}>Normal</Link>
+                <Link id='hard-button' to={"/hard"}>Hard</Link>
 
             </div>
+
+        </div>
+
+        <div id='welcome'>
+
+            <h2 id='welcome-message'>Hey - let's play Felinesweeper! It's just the classic game Minesweeper, but with cat pics, and who doesn't love cat pics? :)</h2>
 
         </div>
 

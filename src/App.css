@@ -32,7 +32,7 @@ a {
 
 }
 
-#home {
+#home, #easy-page {
 
     display: flex;
     flex-direction: column;
@@ -65,8 +65,7 @@ a {
     border-style: solid;
     border-radius: 4px;
     background-color: rgb(255, 219, 165);
-    transition: background-color 200ms ease-out;
-    transition: color 200ms ease-out;
+    transition: background-color 200ms ease-out, color 200ms ease-out;
 
 }
 
@@ -74,6 +73,14 @@ a {
 
     background-color: rgb(255, 153, 0);
     color: rgb(61, 37, 0);
+    transition-duration: 350ms;
+}
+
+#welcome-message {
+
+    margin: 20px 20px 0 20px;
+    font-size: 20px;
+
 }
 
 
@@ -81,14 +88,14 @@ a {
 
     * {
     
-        background-color:rgb(170, 103, 184);
+        background-color:rgb(184, 133, 103);
         width: auto;
     
     }
 
     h1 {
-    
-        font-size: 64px;
+        
+        font-size: 48px;
     
     }
 
@@ -103,5 +110,12 @@ a {
         width: 270px;
     
     }
+
+    #welcome-message {
+
+        margin: 15px 15px 0 15px;
+        font-size: 18px;
+    
+    }    
 
 }
