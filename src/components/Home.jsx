@@ -24,9 +24,11 @@ export default function Home() {
 
         <div id='welcome'>
 
-            <h2 id='welcome-message'>Hey - let's play Felinesweeper! It's just the classic game Minesweeper, but with cat pics, and who doesn't love cat pics? :)</h2>
+            <h2 id='welcome-message'>Hey - let's play Felinesweeper! It's just the classic game Minesweeper, but with cat pics, and who doesn't love cat pics? :)<br/><br/>Select a difficulty from the options above to play!</h2>
 
         </div>
+
+        
 
     </div>
 
