@@ -19,9 +19,25 @@ export default function Easy() {
 
     ])
 
-
     const catPicPath = "/cat-pics/taco"
     const randomIndex = Math.ceil(Math.random() * 43)
+
+    function handleSquareClick(event) {
+
+        const gridCopy = structuredClone(grid)
+        const indices = event.target.id.split("-")
+        
+        gridCopy[indices[0]][indices[1]] = 1
+        console.log(event.target)
+        setGrid(gridCopy)
+
+    }
+
+    function debug(event) {
+
+        console.log(event.target)
+
+    }
 
     return <>
 
@@ -29,32 +45,19 @@ export default function Easy() {
 
             <h1>Felinesweeper</h1>
 
-            <img src={`${catPicPath}${randomIndex}.jpg`} id='hidden-pic'/>
             <div id='easy-grid'>
-            
 
+                <img src={`${catPicPath}${randomIndex}.jpg`} id='hidden-pic' onClick={debug}/>
 
-                {grid.map((sq, index) => {
+                {grid.map((row, index) => {
 
                     return <div className='easy-row' key={index}>
 
-                        {/* add keys to squares */}
-
-                        <div className='easy-square' id={`[${index}][0]`} />
-                        <div className='easy-square' id={`[${index}][1]`} />
-                        <div className='easy-square' id={`[${index}][2]`} />
-                        <div className='easy-square' id={`[${index}][3]`} />
-                        <div className='easy-square' id={`[${index}][4]`} />
-                        <div className='easy-square' id={`[${index}][5]`} />
-                        <div className='easy-square' id={`[${index}][6]`} />
-                        <div className='easy-square' id={`[${index}][7]`} />
-                        <div className='easy-square' id={`[${index}][8]`} />
-                        <div className='easy-square' id={`[${index}][9]`} />
-                        <div className='easy-square' id={`[${index}][10]`} />
-                        <div className='easy-square' id={`[${index}][11]`} />
-                        <div className='easy-square' id={`[${index}][12]`} />
-                        <div className='easy-square' id={`[${index}][13]`} />
-                        <div className='easy-square' id={`[${index}][14]`} />
+                        {row.map((sq, i) => grid[index][i] === 0 ? (
+                            <div className='easy-square' id={`${index}-${i}`} key={`sq${index}${i}`} onClick={handleSquareClick}/>
+                        ) : (
+                            <div className='easy-square-clear' id={`${index}-${i}`} key={`sq${index}${i}`} />
+                        ))}
 
                     </div>
 

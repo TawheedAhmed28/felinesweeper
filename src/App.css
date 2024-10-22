@@ -4,6 +4,7 @@
     
     font-family: "Comic Neue";
     background-color: rgb(255, 202, 124);
+    z-index: 1;
 
 }
 
@@ -104,6 +105,8 @@ a {
 
 #easy-grid, #normal-grid, #hard-grid {
 
+    position: relative;
+    background-color: transparent;
     margin-top: 20px;
     display: flex;
     flex-direction: column;
@@ -117,15 +120,18 @@ a {
 #hidden-pic {
 
     position: absolute;
-    z-index: -1;
+    z-index: 0;
     width: 1200px;
-    max-height: 720px;
+    height: 720px;
+    top: 0;
+    left: 0;
 
 }
 
 .easy-row {
 
     display: flex;
+    background-color: transparent;
     flex-direction: row;
     width: auto;
     height: auto;
@@ -140,12 +146,24 @@ a {
     cursor: pointer;
     background-color: rgb(255, 202, 124);
     opacity: 1;
+    z-index: 1;
 
 }
 
 .easy-square:hover {
 
     background-color: coral;
+
+}
+
+.easy-square-clear {
+
+    opacity: 0;
+    width: 78px;
+    height: 78px;
+    z-index: -1;
+    pointer-events: none;
+    border: 1px solid transparent;
 
 }
 
