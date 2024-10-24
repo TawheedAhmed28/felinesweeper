@@ -49,7 +49,32 @@ export default function Easy() {
     function handleSquareClick(event) {
 
         const gridCopy = structuredClone(grid)
-        const indices = event.target.id.split("-")
+        const indices = event.target.id.split("-").map(n => Number(n))
+
+        if (event.target.className === "easy-square-mine") {
+
+            console.log(event.target.innerText)
+            return
+
+        }
+
+        const adjacent = []
+        
+        for (let i = -1; i < 2; i++) {
+
+            for (let n = -1; n < 2; n++) {
+
+                if (!(n === 0 && i === 0) && (gridCopy[indices[0] + n][indices[1] + i] || gridCopy[indices[0] + n][indices[1] + i] === 0)) {
+
+                    adjacent.push(gridCopy[indices[0] + n][indices[1] + i])
+
+                }
+
+            }
+
+        }
+
+        console.log(adjacent)
 
         gridCopy[indices[0]][indices[1]] = 1
         setGrid(gridCopy)
@@ -80,7 +105,9 @@ export default function Easy() {
 
                         {row.map((sq, i) => {
                             if (grid[index][i] === 0) {
-                                return <div className='easy-square' id={`${index}-${i}`} key={`sq${index}${i}`} onClick={handleSquareClick} />
+                                return <div className='easy-square' id={`${index}-${i}`} key={`sq${index}${i}`} onClick={handleSquareClick}></div>
+                            } else if (grid[index][i] === 2) {
+                                return <div className='easy-square-mine' id={`${index}-${i}`} key={`sq${index}${i}`} onClick={handleSquareClick}></div>
                             } else {
                                 return <div className='easy-square-clear' id={`${index}-${i}`} key={`sq${index}${i}`} />
                             }
