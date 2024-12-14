@@ -21,6 +21,11 @@ export default function Easy() {
 
     ])
 
+    // * KEY:
+    // * 0 is an unrevealed tile.
+    // * 1 is a revealed tile.
+    // * 2 is a mine.
+
     React.useEffect(() => { initialise() }, [])
 
     function initialise() {
@@ -49,38 +54,96 @@ export default function Easy() {
     function handleSquareClick(event) {
 
         const gridCopy = structuredClone(grid)
-        const indices = event.target.id.split("-").map(n => Number(n))
+        const [x, y] = event.target.id.split("-").map(n => Number(n))
 
-        if (event.target.className === "easy-square-mine") {
+        if (gridCopy[x][y] === 1) {
+            return
+        }
+
+        if (gridCopy[x][y] === 2) {
 
             console.log(event.target.innerText)
             return
 
         }
 
-        const adjacent = []
-        
-        for (let i = -1; i < 2; i++) {
+        function checkNearby(x, y) {
 
-            for (let n = -1; n < 2; n++) {
+            const nearby = []
 
-                if (!(n === 0 && i === 0) && (gridCopy[indices[0] + n][indices[1] + i] || gridCopy[indices[0] + n][indices[1] + i] === 0)) {
+            // loop through up to 8 neighbouring tiles
 
-                    adjacent.push(gridCopy[indices[0] + n][indices[1] + i])
+            for (let r = x - 1; r < x + 2; r++) {
+
+                for (let c = y - 1; c < y + 2; c++) {
+
+                    if (r === x && c === y) {
+                        continue
+                        // skip selected square - it can't be a neighbour of itself!
+                    }
+
+                    // if on grid, add neighbour to the "nearby" array
+                    if (r > -1 && r < grid.length && c > -1 && c < grid[0].length) {
+
+                        nearby.push([r, c])
+
+                    }
 
                 }
 
             }
 
+            return nearby
+
         }
 
-        console.log(adjacent)
 
-        gridCopy[indices[0]][indices[1]] = 1
+        
+
+        
+        function reveal(row, col) {
+
+            // return if revealed or mine
+            if (gridCopy[row][col] === 1) {
+                return
+            }
+            
+            gridCopy[row][col] = 1
+    
+            const nearby = checkNearby(x, y)
+            let nearbyMines = 0
+            
+            for (const tile of nearby) {
+                
+                if (gridCopy[tile[0]][tile[1]] === 2) {
+                    nearbyMines++
+                }
+                
+            }
+
+            // if no mines nearby, check neighbouring tiles recursively
+            if (nearbyMines === 0) {
+
+                for (const tile of nearby) {
+
+                    if (gridCopy[tile[0]][tile[1]] !== 0) {
+                        continue
+                    }
+
+                    reveal(tile[0], tile[1])
+                
+                }
+
+            }
+
+
+        }
+        
+        reveal(x, y)
         setGrid(gridCopy)
-
+        
     }
-
+    
     function checkWinCondition() { }
 
     function debug(event) {
