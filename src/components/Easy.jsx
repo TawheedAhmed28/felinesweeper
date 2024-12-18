@@ -97,10 +97,6 @@ export default function Easy() {
 
         }
 
-
-        
-
-        
         function reveal(row, col) {
 
             // return if revealed or mine
@@ -108,9 +104,10 @@ export default function Easy() {
                 return
             }
             
-            gridCopy[row][col] = 1
+            console.log(`Revealing tile: (${row}, ${col}) with value: ${gridCopy[row][col]}`);
+
     
-            const nearby = checkNearby(x, y)
+            const nearby = checkNearby(row, col)
             let nearbyMines = 0
             
             for (const tile of nearby) {
@@ -120,6 +117,10 @@ export default function Easy() {
                 }
                 
             }
+
+            console.log(`Mines: ${nearbyMines}`)
+
+            gridCopy[row][col] = 1
 
             // if no mines nearby, check neighbouring tiles recursively
             if (nearbyMines === 0) {
