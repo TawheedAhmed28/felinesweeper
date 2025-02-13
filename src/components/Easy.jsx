@@ -62,7 +62,7 @@ export default function Easy() {
 
         if (gridCopy[x][y] === 2) {
 
-            console.log(event.target.innerText)
+            console.log("MINE")
             return
 
         }
@@ -168,10 +168,8 @@ export default function Easy() {
                     return <div className='easy-row' key={index}>
 
                         {row.map((sq, i) => {
-                            if (grid[index][i] === 0) {
+                            if (grid[index][i] === 0 || grid[index][i] === 2) {
                                 return <div className='easy-square' id={`${index}-${i}`} key={`sq${index}${i}`} onClick={handleSquareClick}></div>
-                            } else if (grid[index][i] === 2) {
-                                return <div className='easy-square-mine' id={`${index}-${i}`} key={`sq${index}${i}`} onClick={handleSquareClick}></div>
                             } else {
                                 return <div className='easy-square-clear' id={`${index}-${i}`} key={`sq${index}${i}`} />
                             }
