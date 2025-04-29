@@ -9,22 +9,22 @@ export default function Easy() {
     const [randomIndex] = React.useState(Math.ceil(Math.random() * 43))
     const [grid, setGrid] = React.useState([
 
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+        [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+        [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+        [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+        [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+        [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+        [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+        [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+        [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
 
     ])
 
     // * KEY:
-    // * 0 is an unrevealed tile.
-    // * 1 is a revealed tile.
-    // * 2 is a mine.
+    // * -1 is an unrevealed tile.
+    // * Any number above -1 is a revealed tile, with the number representing the amount of nearby mines.
+    // * "MINE" is a mine.
 
     React.useEffect(() => { initialise() }, [])
 
@@ -38,17 +38,17 @@ export default function Easy() {
             const randomRow = Math.floor(Math.random() * grid.length)
             const randomColumn = Math.floor(Math.random() * grid[0].length)
 
-            if (gridCopy[randomRow][randomColumn] === 2) {
+            if (gridCopy[randomRow][randomColumn] === "MINE") {
                 continue
             } else {
-                gridCopy[randomRow][randomColumn] = 2
+                gridCopy[randomRow][randomColumn] = "MINE"
                 mines++
             }
 
         }
 
         setGrid(gridCopy)
-        console.log(grid)
+
     }
 
     function handleSquareClick(event) {
@@ -56,11 +56,11 @@ export default function Easy() {
         const gridCopy = structuredClone(grid)
         const [x, y] = event.target.id.split("-").map(n => Number(n))
 
-        if (gridCopy[x][y] === 1) {
+        if (gridCopy[x][y] > -1) {
             return
         }
 
-        if (gridCopy[x][y] === 2) {
+        if (gridCopy[x][y] === "MINE") {
 
             console.log("MINE")
             return
@@ -100,7 +100,7 @@ export default function Easy() {
         function reveal(row, col) {
 
             // return if revealed or mine
-            if (gridCopy[row][col] === 1) {
+            if (gridCopy[row][col] > -1) {
                 return
             }
             
@@ -112,7 +112,7 @@ export default function Easy() {
             
             for (const tile of nearby) {
                 
-                if (gridCopy[tile[0]][tile[1]] === 2) {
+                if (gridCopy[tile[0]][tile[1]] === "MINE") {
                     nearbyMines++
                 }
                 
@@ -120,14 +120,14 @@ export default function Easy() {
 
             console.log(`Mines: ${nearbyMines}`)
 
-            gridCopy[row][col] = 1
+            gridCopy[row][col] = nearbyMines
 
             // if no mines nearby, check neighbouring tiles recursively
             if (nearbyMines === 0) {
 
                 for (const tile of nearby) {
 
-                    if (gridCopy[tile[0]][tile[1]] !== 0) {
+                    if (gridCopy[tile[0]][tile[1]] !== -1) {
                         continue
                     }
 
@@ -168,11 +168,15 @@ export default function Easy() {
                     return <div className='easy-row' key={index}>
 
                         {row.map((sq, i) => {
-                            if (grid[index][i] === 0 || grid[index][i] === 2) {
+
+                            if (grid[index][i] === -1 || grid[index][i] === "MINE") {
                                 return <div className='easy-square' id={`${index}-${i}`} key={`sq${index}${i}`} onClick={handleSquareClick}></div>
-                            } else {
+                            } else if (grid[index][i] === 0){
                                 return <div className='easy-square-clear' id={`${index}-${i}`} key={`sq${index}${i}`} />
+                            } else {
+                                return <div className={`easy-square-${grid[index][i]}`} id={`${index}-${i}`} key={`sq${index}${i}`}>{grid[index][i]}</div>
                             }
+
                         })}
 
                     </div>

@@ -138,15 +138,75 @@ a {
 
 }
 
-.easy-square {
+.easy-square, .easy-square-1, .easy-square-2, .easy-square-3, .easy-square-4, .easy-square-5, .easy-square-6, .easy-square-7, .easy-square-8 {
 
+    display: flex;
     width: 78px;
     height: 78px;
     border: 1px solid black;
     cursor: pointer;
-    background-color: rgb(255, 202, 124);
+    background-color: #ffca7c;
     opacity: 1;
     z-index: 1;
+    align-items: center;
+    justify-content: center;
+    font-size: 50px;
+
+}
+
+.easy-square-1, .easy-square-2, .easy-square-3, .easy-square-4, .easy-square-5, .easy-square-6, .easy-square-7, .easy-square-8 {
+
+    opacity: 0.85;
+    background-color: #ffefbf;
+    cursor: default;
+
+}
+
+.easy-square-1 {
+
+    color: #3eadff;
+
+}
+
+.easy-square-2 {
+
+    color: #00e295;
+
+}
+
+.easy-square-3 {
+
+    color: #5ec31e;
+
+}
+
+.easy-square-4 {
+
+    color: #ffa60f;
+
+}
+
+.easy-square-5 {
+
+    color: #ff5e0f;
+
+}
+
+.easy-square-6 {
+
+    color: #ff5e0f;
+
+}
+
+.easy-square-7 {
+
+    color: #eb0067;
+
+}
+
+.easy-square-8 {
+
+    color: #a800c6;
 
 }
 
