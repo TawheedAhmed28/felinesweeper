@@ -244,6 +244,22 @@ a {
 
 }
 
+.easy-flag {
+
+    background: transparent;
+    height: 70px;
+    width: auto;
+
+}
+
+.flag-counter {
+
+    display: flex;
+    flex-direction: row;
+    height: 100px;
+
+}
+
 
 @media screen and (max-width: 600px) {
 

@@ -1,11 +1,12 @@
 import React from 'react'
+import flag from '/src/other-pics/felinesweeper-flag.png'
 
 export default function Easy() {
 
     // 15x9 grid
     // normal will be 25x15, hard will be 40x24
 
-    const catPicPath = "/cat-pics/taco"
+    const catPicPath = "src/cat-pics/taco"
     const [randomIndex] = React.useState(Math.ceil(Math.random() * 43))
     const [grid, setGrid] = React.useState([
 
@@ -21,10 +22,27 @@ export default function Easy() {
 
     ])
 
+    const [flagGrid, setFlagGrid] = React.useState([
+
+        [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false],
+        [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false],
+        [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false],
+        [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false],
+        [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false],
+        [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false],
+        [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false],
+        [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false],
+        [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
+
+    ])
+
+    const [flagCounter, setFlagCounter] = React.useState(0)
+
     // * KEY:
     // * -1 is an unrevealed tile.
     // * Any number above -1 is a revealed tile, with the number representing the amount of nearby mines.
     // * "MINE" is a mine.
+    // * "FLAG" is a flagged tile.
 
     React.useEffect(() => { initialise() }, [])
 
@@ -51,12 +69,13 @@ export default function Easy() {
 
     }
 
-    function handleSquareClick(event) {
+    function handleSquareLClick(event) {
 
         const gridCopy = structuredClone(grid)
+        const flagGridCopy = structuredClone(flagGrid)
         const [x, y] = event.target.id.split("-").map(n => Number(n))
 
-        if (gridCopy[x][y] > -1) {
+        if (gridCopy[x][y] > -1 || flagGridCopy[x][y]) {
             return
         }
 
@@ -144,6 +163,30 @@ export default function Easy() {
         setGrid(gridCopy)
         
     }
+
+    function handleSquareRClick(event) {
+
+        event.preventDefault()
+
+        const flagGridCopy = structuredClone(flagGrid)
+        const [x, y] = event.currentTarget.id.split("-").map(n => Number(n))
+        // * 'currentTarget' was used instead of 'target', because 'target' would switch to the <img> of the flag, instead of the parent <div>. Using 'target' prevented the user from unflagging tiles, 'currentTarget' always stuck to the parent element.
+        
+        
+        let flagCounterCopy = structuredClone(flagCounter)
+        
+        if ((flagCounterCopy < 15) || (flagCounterCopy === 15 && flagGridCopy[x][y])) {
+            
+            flagGridCopy[x][y] = !flagGridCopy[x][y]
+            setFlagGrid(flagGridCopy)
+            flagCounterCopy = flagGrid[x][y] ? flagCounterCopy - 1 : flagCounterCopy + 1
+            setFlagCounter(flagCounterCopy)
+
+        }
+
+        return
+
+    }
     
     function checkWinCondition() { }
 
@@ -158,8 +201,19 @@ export default function Easy() {
         <div id='easy-page'>
 
             <h1>Felinesweeper</h1>
+            <div className='flag-counter'>
 
-            <div id='easy-grid'>
+                <img src={flag} style={{objectFit: 'contain', width: '100%', height: '100%', background: 'transparent', margin: '0px 50px 0px 0px'}}/>
+                <div style={{display: 'flex', flexDirection: 'column'}}>
+                
+                    <p>{flagCounter}/15 flags placed</p>
+                    <p>Right click to place or remove flags</p>
+                
+                </div>
+                
+            </div>
+
+            <div id='easy-grid' onContextMenu={(e) => e.preventDefault() /* to stop the drop down menu appearing on right click of the grid */}>
 
                 <img src={`${catPicPath}${randomIndex}.jpg`} id='hidden-pic' />
 
@@ -169,10 +223,18 @@ export default function Easy() {
 
                         {row.map((sq, i) => {
 
-                            if (grid[index][i] === -1 || grid[index][i] === "MINE") {
-                                return <div className='easy-square' id={`${index}-${i}`} key={`sq${index}${i}`} onClick={handleSquareClick}></div>
+                            if (flagGrid[index][i]) {
+                                return <div className='easy-square' id={`${index}-${i}`} key={`sq${index}${i}`} onContextMenu={handleSquareRClick}>
+                                    <img src={flag} alt='flag' className='easy-flag'/>
+                                </div>
+                            }
+
+                            else if (grid[index][i] === -1 || grid[index][i] === "MINE") {
+                                return <div className='easy-square' id={`${index}-${i}`} key={`sq${index}${i}`} onClick={handleSquareLClick} onContextMenu={handleSquareRClick}></div>
+                            
                             } else if (grid[index][i] === 0){
                                 return <div className='easy-square-clear' id={`${index}-${i}`} key={`sq${index}${i}`} />
+                            
                             } else {
                                 return <div className={`easy-square-${grid[index][i]}`} id={`${index}-${i}`} key={`sq${index}${i}`}>{grid[index][i]}</div>
                             }
