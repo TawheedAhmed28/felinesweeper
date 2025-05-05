@@ -257,6 +257,18 @@ a {
     display: flex;
     flex-direction: row;
     height: 100px;
+    width: auto;
+
+}
+
+.flag-instructions {
+
+    display: flex;
+    margin: 8px 0px;
+    font-size: 25px;
+    color: #c70000;
+    font-weight: bold;
+    background-color: transparent;
 
 }
 

@@ -37,6 +37,7 @@ export default function Easy() {
     ])
 
     const [flagCounter, setFlagCounter] = React.useState(0)
+    const [mineClicked, setMineClicked] = React.useState(false)
 
     // * KEY:
     // * -1 is an unrevealed tile.
@@ -81,7 +82,7 @@ export default function Easy() {
 
         if (gridCopy[x][y] === "MINE") {
 
-            console.log("MINE")
+            setMineClicked(!mineClicked)
             return
 
         }
@@ -101,8 +102,8 @@ export default function Easy() {
                         // skip selected square - it can't be a neighbour of itself!
                     }
 
-                    // if on grid, add neighbour to the "nearby" array
-                    if (r > -1 && r < grid.length && c > -1 && c < grid[0].length) {
+                    // if on grid and not flagged, add neighbour to the "nearby" array
+                    if (r > -1 && r < grid.length && c > -1 && c < grid[0].length && !flagGrid[r][c]) {
 
                         nearby.push([r, c])
 
@@ -188,11 +189,9 @@ export default function Easy() {
 
     }
     
-    function checkWinCondition() { }
+    function checkWinCondition() { 
 
-    function debug(event) {
 
-        console.log(event.target)
 
     }
 
@@ -203,11 +202,12 @@ export default function Easy() {
             <h1>Felinesweeper</h1>
             <div className='flag-counter'>
 
-                <img src={flag} style={{objectFit: 'contain', width: '100%', height: '100%', background: 'transparent', margin: '0px 50px 0px 0px'}}/>
-                <div style={{display: 'flex', flexDirection: 'column'}}>
+                <img src={flag} style={{objectFit: 'contain', width: 'auto', height: '100%', background: 'transparent', margin: '0px 0px 0px 0px'}}/>
+
+                <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
                 
-                    <p>{flagCounter}/15 flags placed</p>
-                    <p>Right click to place or remove flags</p>
+                    <p className='flag-instructions'>{flagCounter}/15 flags placed</p>
+                    <p className='flag-instructions'>Right click to place or remove flags</p>
                 
                 </div>
                 
